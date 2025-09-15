@@ -11,14 +11,28 @@ lang_to_language = {"de": "german", "en": "english", "fr": "french"}
 @router.post("/echo", response_model=ChatResponse)
 def echo(request: ChatRequest) -> ChatResponse:
     lang = request.message.rsplit(",")[-1].strip()
-    language = lang_to_language[lang]
+    try:
+        language = lang_to_language[lang]
+    except KeyError:
+        response = f"The language abbreviation '{lang}'' is not valid. It has to be in {list(lang_to_language.keys())}"
+        return ChatResponse(reply=response)
+
     title = request.message.rstrip(lang).rstrip().rstrip(",")
 
-    request_content = f'You are a film expert. You write short reviews for movie titles (4-6 sentences). You answer in {language}. The movie in question is "{title}"'
+    request_content = f"""
+    # ROLE
+    You are a sophisticated movie expert.
+    
+    # INSTRUCTIONS
+    You write short reviews for movie titles (4-6 sentences). You answer in {language}. 
+
+    # INPUT DATA
+    The movie in question is "{title}."
+    """
 
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY"),
+        api_key=os.getenv(""),
     )
 
     completion = client.chat.completions.create(
