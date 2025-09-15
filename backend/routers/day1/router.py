@@ -10,24 +10,19 @@ lang_to_language = {"de": "german", "en": "english", "fr": "french"}
 
 @router.post("/echo", response_model=ChatResponse)
 def echo(request: ChatRequest) -> ChatResponse:
-    lang = request.message.rsplit(",")[-1].strip()
-    try:
-        language = lang_to_language[lang]
-    except KeyError:
-        response = f"The language abbreviation '{lang}'' is not valid. It has to be in {list(lang_to_language.keys())}"
-        return ChatResponse(reply=response)
-
-    title = request.message.rstrip(lang).rstrip().rstrip(",")
 
     request_content = f"""
     # ROLE
     You are a sophisticated movie expert.
     
     # INSTRUCTIONS
-    You write short reviews for movie titles (4-6 sentences). You answer in {language}. 
+    You write short reviews for movie titles (4-6 sentences).
+    The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
+    If you do not know the language or it's abbreviation, please tell the user.
+    If you do not know the movie in question, please tell the user in the specified language. Do not hallucinate movies.
 
     # INPUT DATA
-    The movie in question is "{title}."
+    {request.message}
     """
 
     client = OpenAI(
