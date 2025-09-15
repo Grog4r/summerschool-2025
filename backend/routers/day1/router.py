@@ -6,6 +6,8 @@ import os
 import json
 
 router = APIRouter(prefix="/api/day1", tags=["day1"])
+model = "nvidia/nemotron-nano-9b-v2:free"
+
 
 
 @router.post("/core_task_1", response_model=ChatResponse)
@@ -19,7 +21,7 @@ def core_task_1(request: ChatRequest) -> ChatResponse:
     You write short reviews for movie titles (4-6 sentences).
     The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
     If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, which is "June 2024", in case this is the issue. Do not hallucinate movies.
+    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
 
     # INPUT DATA
     {request.message}
@@ -27,12 +29,11 @@ def core_task_1(request: ChatRequest) -> ChatResponse:
 
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv(""),
     )
 
     completion = client.chat.completions.create(
         extra_body={},
-        model="openai/gpt-oss-20b:free",
+        model=model,
         messages=[{"role": "user", "content": review_prompt}],
     )
     review = completion.choices[0].message.content
@@ -53,7 +54,7 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
     You write short reviews for movie titles (4-6 sentences).
     The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
     If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, which is "June 2024", in case this is the issue. Do not hallucinate movies.
+    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
 
     # INPUT DATA
     {request.message}
@@ -61,12 +62,11 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
 
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv(""),
     )
 
     completion = client.chat.completions.create(
         extra_body={},
-        model="openai/gpt-oss-20b:free",
+        model=model,
         messages=[{"role": "user", "content": review_prompt}],
     )
     review = completion.choices[0].message.content
@@ -83,11 +83,14 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
     - story
     - visual and visual effects
     You have to give each category a rating of "positive", "negative" or "mixed".
-    You have to give the answer back as a JSON in the following format:
+    
+    # OUTPUT FORMAT
+    You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
+    The JSON must look exactly like this (with your filled-in values):
     {{
-        "acting": <RATING>,
-        "story": <RATING>,
-        "visual": <RATING>
+    "acting": "positive|negative|mixed",
+    "story": "positive|negative|mixed",
+    "visual": "positive|negative|mixed"
     }}
 
     # INPUT DATA
@@ -96,7 +99,7 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
 
     completion = client.chat.completions.create(
         extra_body={},
-        model="openai/gpt-oss-20b:free",
+        model=model,
         messages=[{"role": "user", "content": sentiment_prompt}],
         response_format={"type": "json_object"},
     )
@@ -109,8 +112,8 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
     return ChatResponse(reply=response_string)
 
 
-@router.post("/echo", response_model=ChatResponse)
-def echo(request: ChatRequest) -> ChatResponse:
+@router.post("/core_task_3", response_model=ChatResponse)
+def core_task_3(request: ChatRequest) -> ChatResponse:
 
     review_prompt = f"""
     # ROLE
@@ -120,7 +123,7 @@ def echo(request: ChatRequest) -> ChatResponse:
     You write short reviews for movie titles (4-6 sentences).
     The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
     If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, which is "June 2024", in case this is the issue. Do not hallucinate movies.
+    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
 
     # INPUT DATA
     {request.message}
@@ -128,12 +131,11 @@ def echo(request: ChatRequest) -> ChatResponse:
 
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv(""),
     )
 
     completion = client.chat.completions.create(
         extra_body={},
-        model="openai/gpt-oss-20b:free",
+        model=model,
         messages=[{"role": "user", "content": review_prompt}],
     )
     review = completion.choices[0].message.content
@@ -150,12 +152,16 @@ def echo(request: ChatRequest) -> ChatResponse:
     - story
     - visual and visual effects
     You have to give each category a rating of "positive", "negative" or "mixed".
-    You have to give the answer back as a JSON in the following format:
+    
+    # OUTPUT FORMAT
+    You must return only a valid JSON object. Do not include any other text, code fences, or commentary. NO COMMENTARY!!!
+    The JSON must look exactly like this (with your filled-in values):
     {{
-        "acting": <RATING>,
-        "story": <RATING>,
-        "visual": <RATING>
+    "acting": "positive|negative|mixed",
+    "story": "positive|negative|mixed",
+    "visual": "positive|negative|mixed"
     }}
+
 
     # INPUT DATA
     {review}
@@ -163,7 +169,7 @@ def echo(request: ChatRequest) -> ChatResponse:
 
     completion = client.chat.completions.create(
         extra_body={},
-        model="openai/gpt-oss-20b:free",
+        model=model,
         messages=[{"role": "user", "content": sentiment_prompt}],
         response_format={"type": "json_object"},
     )
@@ -185,11 +191,14 @@ def echo(request: ChatRequest) -> ChatResponse:
         - story
         - visual and visual effects
         You have to give each category a rating of "positive", "negative" or "mixed".
-        You have to give the answer back as a JSON in the following format:
+        
+        # OUTPUT FORMAT
+        You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
+        The JSON must look exactly like this (with your filled-in values):
         {{
-            "acting": <RATING>,
-            "story": <RATING>,
-            "visual": <RATING>
+        "acting": "positive|negative|mixed",
+        "story": "positive|negative|mixed",
+        "visual": "positive|negative|mixed"
         }}
 
         # CONTEXT
@@ -201,7 +210,7 @@ def echo(request: ChatRequest) -> ChatResponse:
         """
         completion = client.chat.completions.create(
             extra_body={},
-            model="openai/gpt-oss-20b:free",
+            model=model,
             messages=[{"role": "user", "content": repair_prompt}],
             response_format={"type": "json_object"},
         )
@@ -214,7 +223,14 @@ def echo(request: ChatRequest) -> ChatResponse:
             return ChatResponse(reply="The JSON could not be repaired.")
         sentiment_json += "\n(This was done after repairing.)"
 
-    response_string = review + "\n\n" + sentiment_json
+    response_string = f""""
+{review}
+
+```json
+{sentiment_json}
+```
+    """
+    print(response_string)
 
     return ChatResponse(reply=response_string)
 
