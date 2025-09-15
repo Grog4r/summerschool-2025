@@ -19,7 +19,7 @@ def echo(request: ChatRequest) -> ChatResponse:
     You write short reviews for movie titles (4-6 sentences).
     The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
     If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user in the specified language. Do not hallucinate movies.
+    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, which is "June 2024", in case this is the issue. Do not hallucinate movies.
 
     # INPUT DATA
     {request.message}
