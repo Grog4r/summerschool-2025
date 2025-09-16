@@ -121,7 +121,7 @@ Give your final answer as one compact sentence in the final line.
     )
     response = completion.choices[0].message.content
     if response is None:
-        response = "Something went wroing in aggregation."
+        response = "Something went wrong in aggregation."
     return response
 
 
