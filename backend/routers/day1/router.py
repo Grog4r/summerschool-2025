@@ -182,30 +182,30 @@ The JSON must look exactly like this (with your filled-in values):
     except json.JSONDecodeError:
         print("Invalid JSON. Letting the LLM retry.")
         repair_prompt = f"""
-    # ROLE
-    You are a sentiment analysis machine.
+# ROLE
+You are a sentiment analysis machine.
 
-    # INSTRUCTIONS
-    It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
-    - acting
-    - story
-    - visual and visual effects
-    You have to give each category a rating of "positive", "negative" or "mixed".
-    
-    # OUTPUT FORMAT
-    You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
-    The JSON must look exactly like this (with your filled-in values):
-    {{
-    "acting": "positive|negative|mixed",
-    "story": "positive|negative|mixed",
-    "visual": "positive|negative|mixed"
-    }}
+# INSTRUCTIONS
+It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
+- acting
+- story
+- visual and visual effects
+You have to give each category a rating of "positive", "negative" or "mixed".
 
-    # CONTEXT
-    Your last answer was not valid JSON. You answered with "{sentiment_json}". Please redo your task properly.
-    Do not apologize.
+# OUTPUT FORMAT
+You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
+The JSON must look exactly like this (with your filled-in values):
+{{
+"acting": "positive|negative|mixed",
+"story": "positive|negative|mixed",
+"visual": "positive|negative|mixed"
+}}
 
-    # INPUT DATA
+# CONTEXT
+Your last answer was not valid JSON. You answered with "{sentiment_json}". Please redo your task properly.
+Do not apologize.
+
+# INPUT DATA
     {review}
         """
         completion = client.chat.completions.create(
