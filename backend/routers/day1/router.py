@@ -14,17 +14,17 @@ model = "nvidia/nemotron-nano-9b-v2:free"
 def core_task_1(request: ChatRequest) -> ChatResponse:
 
     review_prompt = f"""
-    # ROLE
-    You are a sophisticated movie expert.
-    
-    # INSTRUCTIONS
-    You write short reviews for movie titles (4-6 sentences).
-    The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
-    If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+# ROLE
+You are a sophisticated movie expert.
 
-    # INPUT DATA
-    {request.message}
+# INSTRUCTIONS
+You write short reviews for movie titles (4-6 sentences).
+The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
+If you do not know the language or it's abbreviation, please tell the user.
+If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+
+# INPUT DATA
+{request.message}
     """
 
     client = OpenAI(
@@ -47,17 +47,17 @@ def core_task_1(request: ChatRequest) -> ChatResponse:
 def core_task_2(request: ChatRequest) -> ChatResponse:
 
     review_prompt = f"""
-    # ROLE
-    You are a sophisticated movie expert.
-    
-    # INSTRUCTIONS
-    You write short reviews for movie titles (4-6 sentences).
-    The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
-    If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+# ROLE
+You are a sophisticated movie expert.
 
-    # INPUT DATA
-    {request.message}
+# INSTRUCTIONS
+You write short reviews for movie titles (4-6 sentences).
+The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
+If you do not know the language or it's abbreviation, please tell the user.
+If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+
+# INPUT DATA
+{request.message}
     """
 
     client = OpenAI(
@@ -74,27 +74,27 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
         return ChatResponse(reply="The review was None.")
 
     sentiment_prompt = f"""
-    # ROLE
-    You are a sentiment analysis machine.
+# ROLE
+You are a sentiment analysis machine.
 
-    # INSTRUCTIONS
-    It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
-    - acting
-    - story
-    - visual and visual effects
-    You have to give each category a rating of "positive", "negative" or "mixed".
-    
-    # OUTPUT FORMAT
-    You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
-    The JSON must look exactly like this (with your filled-in values):
-    {{
-    "acting": "positive|negative|mixed",
-    "story": "positive|negative|mixed",
-    "visual": "positive|negative|mixed"
-    }}
+# INSTRUCTIONS
+It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
+- acting
+- story
+- visual and visual effects
+You have to give each category a rating of "positive", "negative" or "mixed".
 
-    # INPUT DATA
-    {review}
+# OUTPUT FORMAT
+You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
+The JSON must look exactly like this (with your filled-in values):
+{{
+"acting": "positive|negative|mixed",
+"story": "positive|negative|mixed",
+"visual": "positive|negative|mixed"
+}}
+
+# INPUT DATA
+{review}
     """
 
     completion = client.chat.completions.create(
@@ -116,16 +116,16 @@ def core_task_2(request: ChatRequest) -> ChatResponse:
 def core_task_3(request: ChatRequest) -> ChatResponse:
 
     review_prompt = f"""
-    # ROLE
-    You are a sophisticated movie expert.
-    
-    # INSTRUCTIONS
-    You write short reviews for movie titles (4-6 sentences).
-    The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
-    If you do not know the language or it's abbreviation, please tell the user.
-    If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+# ROLE
+You are a sophisticated movie expert.
 
-    # INPUT DATA
+# INSTRUCTIONS
+You write short reviews for movie titles (4-6 sentences).
+The input data is in the format "<MOVIE TITLE>, <LANGUAGE_ABBR|LANGUAGE>".
+If you do not know the language or it's abbreviation, please tell the user.
+If you do not know the movie in question, please tell the user kindly in the specified language and tell them your knowledge cutoff date, in case this is the issue. Do not hallucinate movies.
+
+# INPUT DATA
     {request.message}
     """
 
@@ -143,28 +143,28 @@ def core_task_3(request: ChatRequest) -> ChatResponse:
         return ChatResponse(reply="The review was None.")
 
     sentiment_prompt = f"""
-    # ROLE
-    You are a sentiment analysis machine.
+# ROLE
+You are a sentiment analysis machine.
 
-    # INSTRUCTIONS
-    It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
-    - acting
-    - story
-    - visual and visual effects
-    You have to give each category a rating of "positive", "negative" or "mixed".
-    
-    # OUTPUT FORMAT
-    You must return only a valid JSON object. Do not include any other text, code fences, or commentary. NO COMMENTARY!!!
-    The JSON must look exactly like this (with your filled-in values):
-    {{
-    "acting": "positive|negative|mixed",
-    "story": "positive|negative|mixed",
-    "visual": "positive|negative|mixed"
-    }}
+# INSTRUCTIONS
+It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
+- acting
+- story
+- visual and visual effects
+You have to give each category a rating of "positive", "negative" or "mixed".
+
+# OUTPUT FORMAT
+You must return only a valid JSON object. Do not include any other text, code fences, or commentary. NO COMMENTARY!!!
+The JSON must look exactly like this (with your filled-in values):
+{{
+"acting": "positive|negative|mixed",
+"story": "positive|negative|mixed",
+"visual": "positive|negative|mixed"
+}}
 
 
-    # INPUT DATA
-    {review}
+# INPUT DATA
+{review}
     """
 
     completion = client.chat.completions.create(
@@ -182,31 +182,31 @@ def core_task_3(request: ChatRequest) -> ChatResponse:
     except json.JSONDecodeError:
         print("Invalid JSON. Letting the LLM retry.")
         repair_prompt = f"""
-        # ROLE
-        You are a sentiment analysis machine.
+    # ROLE
+    You are a sentiment analysis machine.
 
-        # INSTRUCTIONS
-        It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
-        - acting
-        - story
-        - visual and visual effects
-        You have to give each category a rating of "positive", "negative" or "mixed".
-        
-        # OUTPUT FORMAT
-        You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
-        The JSON must look exactly like this (with your filled-in values):
-        {{
-        "acting": "positive|negative|mixed",
-        "story": "positive|negative|mixed",
-        "visual": "positive|negative|mixed"
-        }}
+    # INSTRUCTIONS
+    It is your job to take in a movie review and to rate the movie on a few different aspects according to the review:
+    - acting
+    - story
+    - visual and visual effects
+    You have to give each category a rating of "positive", "negative" or "mixed".
+    
+    # OUTPUT FORMAT
+    You must return only a valid JSON object. Do not include any other text, code fences, or commentary.
+    The JSON must look exactly like this (with your filled-in values):
+    {{
+    "acting": "positive|negative|mixed",
+    "story": "positive|negative|mixed",
+    "visual": "positive|negative|mixed"
+    }}
 
-        # CONTEXT
-        Your last answer was not valid JSON. You answered with "{sentiment_json}". Please redo your task properly.
-        Do not apologize.
+    # CONTEXT
+    Your last answer was not valid JSON. You answered with "{sentiment_json}". Please redo your task properly.
+    Do not apologize.
 
-        # INPUT DATA
-        {review}
+    # INPUT DATA
+    {review}
         """
         completion = client.chat.completions.create(
             extra_body={},
