@@ -1,8 +1,7 @@
-from decimal import DecimalException
 from fastapi import APIRouter
 from ...models import ChatRequest, ChatResponse
 from openai import OpenAI
-import os
+import json
 import json
 
 router = APIRouter(prefix="/api/day1", tags=["day1"])
