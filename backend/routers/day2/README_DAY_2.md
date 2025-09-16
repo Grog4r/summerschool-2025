@@ -69,3 +69,7 @@ Zwei Spieler, A und B, spielen ein Spiel mit einem Haufen von 21 Münzen. Abwech
 -   Implementiere deine Lösungen in der Datei `router.py`. Erstelle am besten separate Endpoints wie `/solve-cot` und `/solve-self-consistency`, die einen Problemtext entgegennehmen.
 -   Achte auf eine saubere Fehlerbehandlung.
 -   Dokumentiere deinen Code und deine Vorgehensweise.
+
+![](images/portrait.png)
+
+![](images/baelle.png)

@@ -8,9 +8,9 @@ st.title("Day 2 · Self-Consistency / Tool-Use / Plan-and-Solve (single input)")
 option = st.selectbox(
     "Which core task version do you want to use?",
     (
-        "core_task_1",
+        "core_task_2_bonus",
         "core_task_2",
-        "core_task_3",
+        "core_task_1",
     ),
 )
 
