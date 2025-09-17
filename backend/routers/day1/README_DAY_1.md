@@ -64,3 +64,17 @@ Besuche [Gandalf @ Lakera.ai](https://gandalf.lakera.ai/baseline) und versuche, 
 - **Code**: Implementiere für jede Aufgabe eine oder mehrere  Funktionen. Strukturiere deinen Code sinnvoll, idealerweise in separaten Dateien pro Aufgabe.
 - **Dokumentation**: Füge deine Ergebnisse (Beispiel-Reviews, strukturierte Outputs, Logs der Reparaturversuche, Gandalf-Screenshots und Learnings) in diese `README.md` ein.
 - Sei bereit, deine Lösung am Ende des Labs kurz vorzustellen.
+
+![](images/image.png)
+
+![](images/gandalf_2.png)
+
+![](images/gandalf_3.png)
+
+![](images/gandalf_4.png)
+
+![](images/gandalf_5.png)
+
+![](images/gandalf_6.png)
+
+![](images/gandalf_7.png)
