@@ -24,6 +24,7 @@ dependencies = [
   "markdown-it-py>=4.0.0",
   "mdit-plain>=1.0.1",
   "nltk>=3.9.1",
+  "sentence-transformers>=4.1.0",
 ]
 
 [tool.uv]
