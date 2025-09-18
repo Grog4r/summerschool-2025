@@ -180,8 +180,8 @@ if __name__ == "__main__":
     scores = []
     responses = []
     test_data = json.load(open("data/test_data.json", "r"))
-    random.seed(0)
-    random.shuffle(test_data)
+    # random.seed(0)
+    # random.shuffle(test_data)
     counter = 0
 
     text_embedder = SentenceTransformersTextEmbedder(model=EMBEDDING_MODEL_NAME)
@@ -205,8 +205,8 @@ if __name__ == "__main__":
             {
                 "query": data["query"],
                 "expected": data["answer"],
+                "page": data["page"],
                 "response": response,
-                "similarity": similarity,
             }
         )
         scores.append(similarity)
