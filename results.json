@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Welche Mindestanforderungen muss das USB-Laufwerk erfüllen?",
+    "expected": "Mindestens 64 GB, dauerhafte Schreibgeschwindigkeit ≥4 MB/s, USB-2.0-kompatibel, korrekt formatiert.",
+    "response": "Das USB-Laufwerk muss mindestens 64 GB Speicher haben, eine konstante Schreibgeschwindigkeit von >= 4 MB/s aufweisen und USB-2.0-Kompatibilitat besitzen (USB-3.0-Laufwerke mussen auch USB-2.0 unterstutzen). Es muss ausserdem korrekt formatiert sein (uber die Fahrzeug- oder PC-Formatierung) und uber den USB-A-Anschluss im Handschuhfach angeschlossen werden.",
+    "similarity": 0.9250349992721346
+  },
+  {
+    "query": "EU-Limit: Wie lange zeichnet der Wächter-Modus am Stück auf und wann werden ungespeicherte Aufnahmen gelöscht?",
+    "expected": "Max. 10 Minuten; Löschung bei Deaktivieren des Wächter-Modus oder beim Wiedereinsteigen, sofern kein Ereignis gespeichert wurde.",
+    "response": "Der Wachter-Modus kann laut EU-Datenschutz bis zu 10 Minuten am Stuck aufnehmen. Ungespeicherte Aufnahmen werden sofort geloscht, wenn der Modus ausgeschaltet wird (und andernfalls werden sie geloscht, sobald kein sicherheitsrelevantes Ereignis erkannt wird).",
+    "similarity": 0.9049615412262295
+  },
+  {
+    "query": "Welche relevanten Autopilot-Einstellungen gibt es für Fahrgeschwindigkeit, Geschwindigkeitsabweichung, Aktivierung sowie „Ton für grüne Ampel“?",
+    "expected": "Fahrgeschwindigkeit = Geschwindigkeitslimit oder aktuelle Geschwindigkeit; Abweichung fest oder prozentual; Aktivierung: Einzelklick vs. Doppelklick; optionaler Ton bei Grün.",
+    "response": "Relevante Autopilot-Einstellungen umfassen:  \n- **Fahrgeschwindigkeit** wird uber den Abstandsgeschwindigkeitsregler festgelegt (einzelne Zahl, die bei Aktivierung ubernommen wird).  \n- **Geschwindigkeitsabweichung** kann als Fester-Betrag (z. B. -10 km/h) oder Prozent (z. B. -10 %) zur Ermittelten Geschwindigkeitsbegrenzung gewahlt werden.  \n- **Aktivierung**: Bei ,,Einzelklick\" wird gleichzeitig Abstandsgeschwindigkeitsregler und Lenkassistent aktiviert; bei ,,Doppelklick\" muss der Lenkassistent zwei Mal geklickt werden, sodass der Abstandsgeschwindigkeitsregler unabhangig genutzt werden kann.  \n- **Ton fur grune Ampel**: Wenn aktiviert, ertont ein Signal, sobald eine grune Ampel eingeschaltet wird (oder ein Fahrzeug vor Ihnen anfahrt, wenn Sie den Abstandsgeschwindigkeitsregler nicht nutzen).",
+    "similarity": 0.8933340766105412
+  },
+  {
+    "query": "Nenne alle Abbruchbedingungen für Abstandsgeschwindigkeitsregler und die zusätzlichen für den Lenkassistenten.",
+    "expected": "Regler: rechtes Scrollrad drücken, Bremse treten, >150 km/h, Gang R/P/N, Tür geöffnet, AEB, Fahrergurt gelöst/Sitz verlassen. Lenkassistent zusätzlich: >140 km/h oder Lenkmoment am Lenkrad.",
+    "response": "**Adaptive Cruise Control (Speedsperre) kundigt an:**\n- das rechte Scrollrad am Lenkrad gedruckt\n- das Bremspedal betatigt\n- die Geschwindigkeit > 150 km/h\n- Schalten in Ruckwartsgang, Parkstellung oder Leerlauf\n\n**Zusatzliche Abbruchbedingungen fur den Lenkassistenten:**\n- Tur geoffnet\n- automatische Notbremsung (Kollisionsvermeidung)\n- Fahrersicherheitsgurt gelost bzw. Fahrer verlasst seinen Sitz\n- Aus-/Ausschalten des Abstandsgeschwindigkeitsreglers (Symbol grau)\n\nAlle genannten Aktionen losen beim Lenkassistenten ebenfalls einen Abbruch aus.",
+    "similarity": 0.923567362224023
+  },
+  {
+    "query": "Wie formatiert man ein USB-Laufwerk manuell und welche Dateisysteme werden unterstützt/nicht unterstützt? Welche Ordner sind nötig?",
+    "expected": "Am Computer als exFAT, MS-DOS FAT (Mac), ext3 oder ext4 formatieren; NTFS wird nicht unterstützt; Ordner „TeslaCam“ und ggf. „TeslaTrackMode“ im Root anlegen.",
+    "response": "Manuell kann man ein USB-Laufwerk auf einem Computer als exFAT (empfohlen), MS-DOS FAT (fur Mac), ext3 oder ext4 formatieren - NTFS wird nicht unterstutzt.  \nIm Stammverzeichnis muss danach ein Ordner mit dem Namen **TeslaCam** liegen; falls Sie den Track-Modus nutzen wollen, erganzen Sie noch einen Ordner **TeslaTrackMode**.  \nVorkommen Sie dann des Laufwerks in einen der Front-USB-Anschlusse, ist es vom Fahrzeug fur Dashcam, Wachter-Modus, Track-Modus und Audiodateien einsatzbereit.",
+    "similarity": 0.9372844694781854
+  },
+  {
+    "query": "Wie formatiert man das USB-Laufwerk im Fahrzeug automatisch und welche Ordner werden angelegt?",
+    "expected": "Fahrzeug > Sicherheit > „USB-Laufwerk formatieren“; exFAT; Ordner „TeslaCam“ und ggf. „TeslaTrackMode“.",
+    "response": "Um das USB-Laufwerk automatisch im Fahrzeug zu formatieren, stecke es in einen vorderen USB-Port, wahle **Fahrzeug > Sicherheit > USB-Laufwerk formatieren**. Das Laufwerk wird als exFAT angelegt und in den Ordnern **TeslaCam** und (falls vorhanden) **TeslaTrackMode** strukturiert.",
+    "similarity": 0.9685705174460857
+  }
+]
