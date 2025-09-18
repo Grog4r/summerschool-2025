@@ -31,7 +31,7 @@ document_embedder.warm_up()
 
 document_store = QdrantDocumentStore(
     url="localhost:6333",
-    recreate_index=True,
+    # recreate_index=True,
     embedding_dim=1024,
     return_embedding=True,
     wait_result_from_api=True,
@@ -101,12 +101,12 @@ def ask_llm(
     )
 
     system_prompt = (
-        "You are a helpful assistant who answers user questions concisely "
-        "using only the provided context. Always cite the page numbers where "
-        "the information was found at the end of your answer, using the format (Seite X, Y, Z). "
-        "If you cannot find the answer in the context, say so politely. "
-        "Do not invent page numbers. "
-        "You shall not output any unreadable tokens like <s> or [/s]"
+        "You are a helpful assistant who answers user questions concisely using only the provided context. "
+        "Answer in the users language. Think internally about your answer befor you answer. "
+        "Answer in 1 to 3 sentences, be precise and short. "
+        "Always cite the page numbers where the information was found *at the end of your answer*, using the format (Seite X, Y, Z). "
+        "If you cannot find the answer in the context, say so politely. Do not invent page numbers. "
+        "You shall not output any unreadable tokens like <s> or [/s]. Only use standard ASCII tokens."
     )
     completion = client.chat.completions.create(
         model=LANGUAGE_MODEL_NAME,
@@ -152,7 +152,14 @@ def get_response(session, VERBOSE: bool = False) -> str:
     reply = ask_llm(full_query, VERBOSE=VERBOSE)
     if len(reply.strip()) == 0:
         reply = "Entschuldigung, hier ist etwas schief gegangen."
-    return unidecode(reply)
+    asciify_table = {
+        "‑": "-",
+        "–": "-",
+        " ": " ",
+    }
+    for old, new in asciify_table.items():
+        reply = reply.replace(old, new)
+    return reply
 
 
 if __name__ == "__main__":
@@ -160,7 +167,7 @@ if __name__ == "__main__":
     # python -m backend.routers.day3.tools
     import numpy as np
 
-    VERBOSE = True
+    VERBOSE = False
 
     def cosine_similarity(a: list[float], b: list[float]) -> float:
         a_array = np.array(a)
@@ -181,8 +188,8 @@ if __name__ == "__main__":
     text_embedder.warm_up()
 
     for data in test_data:
-        if counter > 3:
-            break
+        # if counter > 3:
+        #     break
 
         response = get_response(
             ChatSession(messages=[ChatMessage(role="user", content=data["query"])]),
