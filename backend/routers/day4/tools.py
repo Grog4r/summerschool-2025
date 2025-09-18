@@ -3,7 +3,7 @@ import random
 
 from openai import OpenAI
 from fastapi import APIRouter
-from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
+from haystack_integrations.components.retrievers.qdrant import QdrantHybridRetriever
 from haystack import Document, Pipeline
 from haystack.components.writers import DocumentWriter
 from haystack.components.embedders import (
@@ -16,6 +16,12 @@ from haystack.components.preprocessors import DocumentSplitter
 from haystack.components.converters import PyPDFToDocument
 from haystack.core.component import component
 from haystack import Document
+
+# New imports for sparse embeddings
+from haystack_integrations.components.embedders.fastembed import (
+    FastembedSparseDocumentEmbedder,
+    FastembedSparseTextEmbedder,
+)
 
 from ...models import ChatSession, ChatMessage
 
@@ -55,10 +61,16 @@ document_embedder = SentenceTransformersDocumentEmbedder(
 )
 document_embedder.warm_up()
 
+sparse_document_embedder = FastembedSparseDocumentEmbedder(
+    model="prithivida/Splade_PP_en_v1"
+)
+sparse_document_embedder.warm_up()
+
 document_store = QdrantDocumentStore(
     url="localhost:6333",
     # recreate_index=True,
     embedding_dim=1024,
+    use_sparse_embeddings=True,  # Added for sparse embeddings
     return_embedding=True,
     wait_result_from_api=True,
     similarity="cosine",
@@ -73,6 +85,9 @@ splitter = DocumentSplitter(
 )
 indexing_pipeline.add_component("splitter", splitter)
 indexing_pipeline.add_component("embedder", document_embedder)
+indexing_pipeline.add_component(
+    "sparse_embedder", sparse_document_embedder
+)  # Added sparse embedder
 indexing_pipeline.add_component("writer", DocumentWriter(document_store=document_store))
 
 # Adjust the connections to include the new component
@@ -80,7 +95,12 @@ indexing_pipeline.connect("converter", "corrector")
 indexing_pipeline.connect("corrector", "cleaner")
 indexing_pipeline.connect("cleaner", "splitter")
 indexing_pipeline.connect("splitter", "embedder")
-indexing_pipeline.connect("embedder", "writer")
+indexing_pipeline.connect(
+    "embedder", "sparse_embedder"
+)  # Connect dense to sparse embedder
+indexing_pipeline.connect(
+    "sparse_embedder", "writer"
+)  # Connect sparse embedder to writer
 
 if document_store.count_documents() == 0:
     print("Document store is empty. Starting indexing...")
@@ -93,18 +113,120 @@ else:
 
 def get_top_k_documents(
     query: str,
-    max_top_k: int = 3,
-    similarity_threshold=0.80,
+    max_top_k: int = 5,
+    similarity_threshold=0.85,
 ) -> list[tuple[str | None, float | None, int | None]]:
     query_pipeline = Pipeline()
     text_embedder = SentenceTransformersTextEmbedder(model=EMBEDDING_MODEL_NAME)
     text_embedder.warm_up()
-    query_pipeline.add_component("text_embedder", text_embedder)
-    retriever = QdrantEmbeddingRetriever(document_store=document_store, top_k=max_top_k)
-    query_pipeline.add_component("retriever", retriever)
-    query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
+    sparse_text_embedder = FastembedSparseTextEmbedder(
+        model="prithivida/Splade_PP_en_v1"
+    )  # Added sparse text embedder
+    sparse_text_embedder.warm_up()
 
-    results = query_pipeline.run({"text_embedder": {"text": query}})
+    query_pipeline.add_component("text_embedder", text_embedder)
+    query_pipeline.add_component(
+        "sparse_text_embedder", sparse_text_embedder
+    )  # Add sparse text embedder to pipeline
+
+    retriever = QdrantHybridRetriever(
+        document_store=document_store, top_k=max_top_k
+    )  # Using Hybrid Retriever
+    query_pipeline.add_component("retriever", retriever)
+
+    query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
+    query_pipeline.connect(
+        "sparse_text_embedder.sparse_embedding", "retriever.query_sparse_embedding"
+    )  # Connect sparse embedder
+
+    results = query_pipeline.run(
+        {"text_embedder": {"text": query}, "sparse_text_embedder": {"text": query}}
+    )  # Add sparse embedder input
+    docs: list[Document] = results["retriever"]["documents"]
+
+    return [
+        (doc.content, doc.score, doc.meta.get("page_number"))
+        for doc in docs
+        if doc.score is not None and doc.score > similarity_threshold
+    ]
+
+
+def generate_hyde_document(query: str, VERBOSE: bool = True) -> str:
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+    )
+
+    system_prompt = (
+        "You are a helpful assistant. Generate a document that could potentially answer the following user query. "
+        "The document should be detailed and comprehensive. "
+        "Do not include any preambles like 'Here is a document that could answer your question'."
+    )
+    completion = client.chat.completions.create(
+        model=LANGUAGE_MODEL_NAME,
+        messages=[
+            {
+                "role": "system",
+                "content": system_prompt,
+            },
+            {
+                "role": "user",
+                "content": query,
+            },
+        ],
+    )
+    response = completion.choices[0].message.content
+    if VERBOSE:
+        print("---- Hypothetical Document ----")
+        print(response)
+        print("-----------------------------")
+
+    if response is None:
+        response = ""
+    return response
+
+
+def get_hyde_documents(
+    query: str,
+    max_top_k: int = 3,
+    similarity_threshold=0.80,
+    VERBOSE: bool = False,
+) -> list[tuple[str | None, float | None, int | None]]:
+    """
+    Retrieves documents using the HyDE technique.
+    """
+    hypothetical_document = generate_hyde_document(query, VERBOSE=VERBOSE)
+
+    # If the hypothetical document is empty, fall back to the original query
+    if not hypothetical_document.strip():
+        search_text = query
+    else:
+        search_text = hypothetical_document
+
+    query_pipeline = Pipeline()
+    text_embedder = SentenceTransformersTextEmbedder(model=EMBEDDING_MODEL_NAME)
+    text_embedder.warm_up()
+    sparse_text_embedder = FastembedSparseTextEmbedder(
+        model="prithivida/Splade_PP_en_v1"
+    )
+    sparse_text_embedder.warm_up()
+
+    query_pipeline.add_component("text_embedder", text_embedder)
+    query_pipeline.add_component("sparse_text_embedder", sparse_text_embedder)
+
+    retriever = QdrantHybridRetriever(document_store=document_store, top_k=max_top_k)
+    query_pipeline.add_component("retriever", retriever)
+
+    query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
+    query_pipeline.connect(
+        "sparse_text_embedder.sparse_embedding", "retriever.query_sparse_embedding"
+    )
+
+    results = query_pipeline.run(
+        {
+            "text_embedder": {"text": search_text},
+            "sparse_text_embedder": {"text": search_text},
+        }
+    )
     docs: list[Document] = results["retriever"]["documents"]
 
     return [
@@ -159,8 +281,25 @@ def ask_llm(
     return response
 
 
-def get_response(session, VERBOSE: bool = False) -> str:
-    documents = get_top_k_documents(session.messages[-1].content)
+def get_response(
+    session,
+    max_top_k: int = 5,
+    similarity_threshold: float = 0.8,
+    USE_HYDE: bool = False,
+    VERBOSE: bool = False,
+) -> str:
+    if USE_HYDE:
+        documents = get_hyde_documents(
+            session.messages[-1].content,
+            max_top_k=max_top_k,
+            similarity_threshold=similarity_threshold,
+        )
+    else:
+        documents = get_top_k_documents(
+            session.messages[-1].content,
+            max_top_k=max_top_k,
+            similarity_threshold=similarity_threshold,
+        )
     if VERBOSE:
         print(documents)
     documents_str = ""
@@ -243,5 +382,5 @@ if __name__ == "__main__":
         f"Finished {counter} queries. Average similarity score is {np.mean(scores):.3f}"
     )
 
-    with open("results.json", "w") as f:
+    with open("backend/routers/day4/evaluation_data_day_4.json", "w") as f:
         json.dump(responses, f, indent=2, ensure_ascii=False)
