@@ -413,7 +413,7 @@ def save_results(results: EvaluationResult, output_path: str):
 def main():
     """Main evaluation function"""
     # Default paths
-    default_data_path = "data/evaluation_data.json"
+    default_data_path = "evaluation_data.json"
     default_output_path = "evaluation_results.json"
 
     # Check for command line arguments
@@ -421,9 +421,9 @@ def main():
     output_path = sys.argv[2] if len(sys.argv) > 2 else default_output_path
 
     # Get API key from environment
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        print("Error: OPENROUTER_API_KEY environment variable not set")
+        print("Error: OPENAI_API_KEY environment variable not set")
         print("Please add your OpenRouter API key to your .env file")
         sys.exit(1)
 

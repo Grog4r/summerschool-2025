@@ -1,10 +1,11 @@
 import json
 import random
+
+from openai import OpenAI
+from fastapi import APIRouter
+from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
 from haystack import Document, Pipeline
 from haystack.components.writers import DocumentWriter
-from openai import OpenAI
-from haystack_integrations.components.retrievers.qdrant import QdrantEmbeddingRetriever
-from fastapi import APIRouter
 from haystack.components.embedders import (
     SentenceTransformersDocumentEmbedder,
     SentenceTransformersTextEmbedder,
@@ -13,9 +14,34 @@ from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
 from haystack.components.preprocessors import DocumentCleaner
 from haystack.components.preprocessors import DocumentSplitter
 from haystack.components.converters import PyPDFToDocument
-from unidecode import unidecode
+from haystack.core.component import component
+from haystack import Document
 
 from ...models import ChatSession, ChatMessage
+
+
+PAGE_OFFSET = 2
+
+
+@component
+class PageNumberCorrector:
+    """
+    A component to adjust the page number metadata of documents by a fixed offset.
+    """
+
+    def __init__(self, offset: int):
+        if not isinstance(offset, int):
+            raise TypeError("Offset must be an integer.")
+        self.offset = offset
+
+    @component.output_types(documents=list[Document])
+    def run(self, documents: list[Document]):
+        for doc in documents:
+            if "page_number" in doc.meta and doc.meta["page_number"] is not None:
+                # Only adjust if the resulting page number is positive
+                if doc.meta["page_number"] > self.offset:
+                    doc.meta["page_number"] -= self.offset
+        return {"documents": documents}
 
 
 router = APIRouter(prefix="/api/day3", tags=["day3"])
@@ -40,17 +66,18 @@ document_store = QdrantDocumentStore(
 
 indexing_pipeline = Pipeline()
 indexing_pipeline.add_component("converter", PyPDFToDocument())
+indexing_pipeline.add_component("corrector", PageNumberCorrector(offset=PAGE_OFFSET))
 indexing_pipeline.add_component("cleaner", DocumentCleaner())
-# Explicitly define split_length and split_overlap to ensure metadata is preserved.
-indexing_pipeline.add_component(
-    "splitter",
-    DocumentSplitter(
-        split_by="word", language="de", split_length=200, split_overlap=20
-    ),
+splitter = DocumentSplitter(
+    split_by="word", language="de", split_length=200, split_overlap=20
 )
+indexing_pipeline.add_component("splitter", splitter)
 indexing_pipeline.add_component("embedder", document_embedder)
 indexing_pipeline.add_component("writer", DocumentWriter(document_store=document_store))
-indexing_pipeline.connect("converter", "cleaner")
+
+# Adjust the connections to include the new component
+indexing_pipeline.connect("converter", "corrector")
+indexing_pipeline.connect("corrector", "cleaner")
 indexing_pipeline.connect("cleaner", "splitter")
 indexing_pipeline.connect("splitter", "embedder")
 indexing_pipeline.connect("embedder", "writer")

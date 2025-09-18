@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class EvaluationItem(BaseModel):
@@ -22,9 +22,16 @@ class JudgeResponse(BaseModel):
     )
     reasoning: str = Field(
         ...,
-        description="Explanation of the scoring decision",
-        max_length=200  # Reasonable limit for reasoning text
+        description="Explanation of the scoring decision"
     )
+
+    @field_validator('reasoning')
+    @classmethod
+    def truncate_reasoning(cls, v: str) -> str:
+        """Truncates the reasoning string to 200 characters."""
+        if len(v) > 200:
+            return v[:200]
+        return v
 
     @classmethod
     def get_json_schema_for_openrouter(cls) -> dict:

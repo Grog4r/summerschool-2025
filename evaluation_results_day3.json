@@ -1,0 +1,142 @@
+{
+  "total_questions": 15,
+  "correct_answers": 12,
+  "accuracy": 0.8,
+  "detailed_results": [
+    {
+      "question_id": 1,
+      "query": "Welcher USB-Port ist für Dashcam/Wächter-Modus zu verwenden?",
+      "ground_truth": "USB-A im Handschuhfach; vordere USB-Ports unterstützen Formatieren/Speichern/Abspielen, hintere USB-C nur Laden.",
+      "system_answer": "Der Dashcam- / Wächter-Modus nutzt den USB-A-Port im Handschuhfach Ihres Fahrzeugs. USB-C-Anschlüsse in der Mittelkonsole und hinter dem Touchscreen unterstützen dieses Feature nicht. (Seite 167, 169)",
+      "page": "168-169",
+      "correct": 1,
+      "reasoning": "All essential facts present: USB-A in glovebox for Dashcam/Sentry; front USBs support formatting/saving/playing (implied by exclusion); rear USB-C only charging."
+    },
+    {
+      "question_id": 2,
+      "query": "Welche Mindestanforderungen muss das USB-Laufwerk erfüllen?",
+      "ground_truth": "Mindestens 64 GB, dauerhafte Schreibgeschwindigkeit ≥4 MB/s, USB-2.0-kompatibel, korrekt formatiert.",
+      "system_answer": "Das USB-Laufwerk muss mindestens 64 GB Speicherkapazität besitzen, eine dauerhafte Schreibgeschwindigkeit von mindestens 4 MB/s aufweisen, USB-2.0-Kompatibilität besitzen (ein USB-3.0-Laufwerk muss auch USB-2.0 unterstützen), und korrekt formatiert sein (exFAT). (Seite 169)",
+      "page": "168-169",
+      "correct": 1,
+      "reasoning": "All essential requirements present and accurate: ≥64 GB capacity, ≥4 MB/s sustained write speed, USB-2.0 compatible, correctly formatted. Extra details (exFAT, USB-3.0 support) harmless."
+    },
+    {
+      "question_id": 3,
+      "query": "Wie formatiert man das USB-Laufwerk im Fahrzeug automatisch und welche Ordner werden angelegt?",
+      "ground_truth": "Fahrzeug > Sicherheit > „USB-Laufwerk formatieren“; exFAT; Ordner „TeslaCam“ und ggf. „TeslaTrackMode“.",
+      "system_answer": "Stecken Sie das USB-Laufwerk in einen vorderen USB-Anschluss und gehen Sie über Fahrzeug > Sicherheit > USB-Laufwerk formatieren. Dabei wird es automatisch als exFAT formatiert und die Ordner „TeslaCam“ sowie, sofern vorhanden, „TeslaTrackMode“ werden angelegt. (Seite 169, 170)",
+      "page": "168-169",
+      "correct": 1,
+      "reasoning": "All essential elements present: path Fahrzeug > Sicherheit > USB-Laufwerk formatieren, format exFAT, folders TeslaCam and optionally TeslaTrackMode. Extra insertion step is harmless."
+    },
+    {
+      "question_id": 4,
+      "query": "Wo öffnet man die Energie-App und wofür stehen farbige vs. graue Linie?",
+      "ground_truth": "App-Launcher; farbige Linien = tatsächlicher Verbrauch, graue Linie = Prognose.",
+      "system_answer": "Sie öffnen die Energie-App über das App-Launcher-Icon (die drei Punkte) in der unteren Leiste, tippen dann auf „Energie-App“. Die farbigen Linien im Diagramm zeigen Ihren tatsächlichen Energieverbrauch während der Fahrt, die graue Linie den vorhergesagten Verbrauch an. (Seite 210)",
+      "page": "208",
+      "correct": 1,
+      "reasoning": "All essential facts present: App-Launcher to open Energy App, colored lines = actual consumption, gray line = forecast. Extra details do not contradict."
+    },
+    {
+      "question_id": 5,
+      "query": "Wie aktiviert man „Mit Autopilot navigieren“ automatisch „vor jeder Fahrt“ und unter welchen Bedingungen startet es dann?",
+      "ground_truth": "Fahrzeug > Autopilot > Mit Autopilot navigieren (Beta) > „Vor jeder Fahrt aktivieren“; benötigt aktiven Lenkassistenten, aktive Navigationsroute und Autobahn mit kontrolliertem Zugang.",
+      "system_answer": "Sie aktivieren „Mit Autopilot navigieren“ im Menü **Fahrzeug > Autopilot > Mit Autopilot navigieren (Beta)** und schalten dort die Option **„Vor jeder Fahrt aktivieren“** ein. Sobald diese Einstellung eingeschaltet ist, wird die Funktion automatisch aktiviert, wenn gleichzeitig der Lenkassistent eingeschaltet ist, Sie eine Navigationsroute zu einem Ziel aktivieren und sich auf einer Autobahn mit kontrolliertem Zugang befinden. (Seite 122, 125)",
+      "page": "122-123",
+      "correct": 1,
+      "reasoning": "All essential elements match: menu path Fahrzeug > Autopilot > Mit Autopilot navigieren (Beta) > „Vor jeder Fahrt aktivieren“; conditions: active Lenkassistent, active navigation route, controlled-acc"
+    },
+    {
+      "question_id": 6,
+      "query": "Nenne alle Abbruchbedingungen für Abstandsgeschwindigkeitsregler und die zusätzlichen für den Lenkassistenten.",
+      "ground_truth": "Regler: rechtes Scrollrad drücken, Bremse treten, >150 km/h, Gang R/P/N, Tür geöffnet, AEB, Fahrergurt gelöst/Sitz verlassen. Lenkassistent zusätzlich: >140 km/h oder Lenkmoment am Lenkrad.",
+      "system_answer": "Die Abstandsgeschwindigkeitsregler-Abbruchbedingungen sind: Tür geöffnet, Sicherheitsgurt gelöst bzw. Fahrer verlässt den Sitz, oder der Regler wird manuell ausgeschaltet (Seite 126).  \nDer Lenkassistent bricht zusätzlich ab, wenn man die oben genannten Aktionen ausführt, aber auch bei: Überschreiten von 140 km/h, Ausüben einer (auch kleinen) Drehkraft auf das Lenkrad oder Nicht-Reaktion auf die Aufforderung, die Hände am Lenkrad zu lassen, inklusive der darauf folgenden Meldungen (Seite 126, 127).",
+      "page": "121",
+      "correct": 0,
+      "reasoning": "Missing essential conditions for distance controller: pressing right scroll wheel, braking, >150 km/h, gear R/P/N, AEB. Only partial list provided."
+    },
+    {
+      "question_id": 7,
+      "query": "Unterschied zwischen geschwindigkeits- und routenbasierten Spurwechseln; wann ist eine Bestätigung nötig und wann bricht der Spurwechsel ab?",
+      "ground_truth": "Geschwindigkeitsbasiert: Spurwechsel zum Erreichen der Sollgeschwindigkeit; routenbasiert: Spurwechsel/Abfahrt laut Route. Bestätigung per Blinker innerhalb 3 s, sonst Warnton; Abbruch, wenn nicht binnen 5 s ausführbar.",
+      "system_answer": "Ich kann die spezifischen Unterschiede zwischen geschwindigkeitsbasierten und routenbasierten Spurwechseln sowie die genauen Kriterien für Bestätigungen oder Abbrüche in den angegebenen Seiten leider nicht herausfinden. Bitte schauen Sie in den entsprechenden Abschnitten des Handbuchs nach zusätzlicher Detailinformation.",
+      "page": "122-123",
+      "correct": 0,
+      "reasoning": "System answer fails to provide any essential facts from reference, instead stating inability to find information, omitting definitions, confirmation within 3s, and abort within 5s."
+    },
+    {
+      "question_id": 8,
+      "query": "Was passiert mit „Mit Autopilot navigieren“, wenn man eine kontrollierte Autobahn verlässt?",
+      "ground_truth": "Wechselt zum Lenkassistenten, Ton ertönt, Fahrspurlinien blau; Fahrer bleibt aufmerksam und eingriffsbereit.",
+      "system_answer": "Beim Verlassen einer kontrollierten Autobahn wird „Mit Autopilot navigieren“ deaktiviert und wechselt zum Lenkassistenten. Ein Signalton ertönt, und die Fahrspurlinien erscheinen blau (statt des vereinfachten Blauen); der Lenkassistent bleibt aktiv, sodass der Fahrer manuell weiterfahren kann. (Seite 125, 126)",
+      "page": "123",
+      "correct": 1,
+      "reasoning": "All essential facts present and accurate: switches to steering assistant, tone sounds, lane lines blue; driver must remain attentive and ready to intervene."
+    },
+    {
+      "question_id": 9,
+      "query": "Wie sieht man gespeicherte Dashcam/Wächter-Clips am Fahrzeug und welche Ordnerstruktur hat „TeslaCam“?",
+      "ground_truth": "Parkstellung > Dashcam-App; Listen nach Ort/Zeit, Clips abspielen/löschen. Ordner: „RecentClips“, „SavedClips“, „SentryClips“.",
+      "system_answer": "Im Fahrzeug öffnen Sie die Dashcam-App im App-Launcher (nur im Parkmodus) - dort listet sich auf dem Touchscreen alle Aufnahmen nach Ort und Zeitstempel, Sie können die Clips abspielen, zurückspulen, vorspulen oder löschen. Auf einem USB-Stick sehen Sie im Ordner „TeslaCam“ die Unterordner ‘RecentClips’ (bis 60 Min Anwesenheit), ‘SavedClips’ (vorher gespeicherte Aufnahmen) und ‘SentryClips’ (Sentry-Modus-Erkenntnisse) (Seite 170, 171).",
+      "page": "169",
+      "correct": 1,
+      "reasoning": "All essential facts present: access via Dashcam app in Park mode, list by location/time, play/delete clips. TeslaCam folders match: RecentClips, SavedClips, SentryClips. Extra USB details harmless."
+    },
+    {
+      "question_id": 10,
+      "query": "Welche relevanten Autopilot-Einstellungen gibt es für Fahrgeschwindigkeit, Geschwindigkeitsabweichung, Aktivierung sowie „Ton für grüne Ampel“?",
+      "ground_truth": "Fahrgeschwindigkeit = Geschwindigkeitslimit oder aktuelle Geschwindigkeit; Abweichung fest oder prozentual; Aktivierung: Einzelklick vs. Doppelklick; optionaler Ton bei Grün.",
+      "system_answer": "Relevante Autopilot-Einstellungen sind:  \n- **Fahrgeschwindigkeit:** wählen Sie entweder ein Geschwindigkeitslimit oder die aktuelle Geschwindigkeit.  \n- **Geschwindigkeitsabweichung:** bei Wahl des Limits können Sie eine feste Abweichung oder einen Prozentsatz festlegen (fest = konstante Anpassung, Prozent = Anpassung in Relation zur Straßenbeschränkung).  \n- **Autopilot-Aktivierung:** bestimmen Sie, ob Lenk- und Abstandsgeschwindigkuster allein durch einen Einzelklick oder separat durch einen Doppelklick auf das rechte Scrollrad aktiviert werden.  \n- **Ton für grüne Ampel:** aktivieren Sie den akustischen Hinweis, der bei Übergang einer roten auf grüne Ampel bzw. beim Vorankommen eines vorausfahrenden Fahrzeugs ertönt. (Seite 122)",
+      "page": "120-121",
+      "correct": 1,
+      "reasoning": "All essential elements present and accurate: Fahrgeschwindigkeit options, Abweichung types, Aktivierung (single vs. double click), optional green light tone."
+    },
+    {
+      "question_id": 11,
+      "query": "EU-Limit: Wie lange zeichnet der Wächter-Modus am Stück auf und wann werden ungespeicherte Aufnahmen gelöscht?",
+      "ground_truth": "Max. 10 Minuten; Löschung bei Deaktivieren des Wächter-Modus oder beim Wiedereinsteigen, sofern kein Ereignis gespeichert wurde.",
+      "system_answer": "Der Wächter-Modus zeichnet maximal 10 Minuten am Stück, und Aufnahmen, die nicht gespeichert wurden, werden gelöscht, sobald der Modus abgeschaltet oder Sie wieder in das Fahrzeug einsteigen. (Seite 170)",
+      "page": "168",
+      "correct": 1,
+      "reasoning": "All essential facts match: max. 10 minutes recording; deletion on deactivation or re-entry if no event saved."
+    },
+    {
+      "question_id": 12,
+      "query": "Wie formatiert man ein USB-Laufwerk manuell und welche Dateisysteme werden unterstützt/nicht unterstützt? Welche Ordner sind nötig?",
+      "ground_truth": "Am Computer als exFAT, MS-DOS FAT (Mac), ext3 oder ext4 formatieren; NTFS wird nicht unterstützt; Ordner „TeslaCam“ und ggf. „TeslaTrackMode“ im Root anlegen.",
+      "system_answer": "Manuell wird das USB-Laufwerk auf einem PC als exFAT, MS-DOS FAT, ext3 oder ext4 formatiert - NTFS ist nicht unterstützt (Seite 170). In den Stammordner müssen die Ordner TeslaCam und (falls Track-Modus verwendet werden soll) TeslaTrackMode angelegt werden (Seite 170).",
+      "page": "168-170",
+      "correct": 1,
+      "reasoning": "All essential facts match: supported formats (exFAT, MS-DOS FAT, ext3, ext4), unsupported NTFS, required root folders (TeslaCam and optionally TeslaTrackMode)."
+    },
+    {
+      "question_id": 13,
+      "query": "Welche Voraussetzungen müssen erfüllt sein, damit „USB-Laufwerk formatieren“ im Fahrzeug verfügbar ist, und welche Ports sind dafür zu nutzen bzw. nicht zu nutzen?",
+      "ground_truth": "Laufwerk mit ≤1 Partition in einen vorderen, unterstützten USB-Port stecken; ideal USB-A im Handschuhfach. Hintere USB-C unterstützen kein Formatieren/Speichern/Abspielen.",
+      "system_answer": "Um „USB-Laufwerk formatieren“ im Fahrzeug anzusehen, muss ein USB-Stick mit **nicht mehr als einer Partition, mindestens 64 GB, USB-2.0-Kompatibilität und einer dauerhaften Schreibgeschwindigkeit von ≥ 4 MB/s** im **vorderen USB-A-Port** (oder dem USB-A-Port im Handschuhfach) eingesteckt sein - USB-C-Ports und die hinteren USB-Ports dürfen nicht verwendet werden (Seite 170, 169).",
+      "page": "168-170",
+      "correct": 0,
+      "reasoning": "System answer adds extraneous requirements (≥64 GB, USB-2.0, ≥4 MB/s speed) not in reference; reference only specifies ≤1 partition and front supported ports (ideal glovebox USB-A), with rear USB-C un"
+    },
+    {
+      "question_id": 14,
+      "query": "In der Energie-App: Wie schaltet man zwischen „Aktuelle Reichweite“ und „Durchschnittliche Reichweite“ um und was ändert sich?",
+      "ground_truth": "Umschalten per Tippen; „Aktuelle Reichweite“ nutzt nur letzte Datenpunkte, „Durchschnittliche Reichweite“ mittelt über 10/25/50 km für genauere Schätzung.",
+      "system_answer": "In der Energie-App tippen Sie einfach auf „Aktuelle Reichweite“ oder auf „Durchschnittliche Reichweite“, um zwischen den beiden Modi umzuschalten.  \nDie **Aktuelle Reichweite** nutzt ausschließlich die letzten Datenpunkte, um die geschätzte Reichweite zu berechnen, während die **Durchschnittliche Reichweite** den Energieverbrauch der letzten 10, 25 oder 50 km berücksichtigt und damit eine genauere Schätzung liefert. (Seite 210)",
+      "page": "208",
+      "correct": 1,
+      "reasoning": "All essential elements match: switching by tapping, current range uses only latest data points, average range averages over 10/25/50 km for more accurate estimate. Extra details harmless."
+    },
+    {
+      "question_id": 15,
+      "query": "Welche Einstellung erlaubt die Nutzung des Abstandsgeschwindigkeitsreglers ohne Lenkassistent?",
+      "ground_truth": "„Autopilot-Aktivierung“ auf Doppelklick stellen.",
+      "system_answer": "Um den Abstandsgeschwindigkeitsregler ohne Lenkassistent zu nutzen, setzen Sie in  \n„Fahrzeug > Autopilot > Autopilot-Aktivierung“ die Einstellung auf **Doppelklick** - damit aktiviert das rechte Scrollrad den Regler allein. (Seite 123)",
+      "page": "120-121",
+      "correct": 1,
+      "reasoning": "Essential fact matches: Set 'Autopilot-Aktivierung' to 'Doppelklick' to use distance speed controller without steering assistant. Extra details do not contradict."
+    }
+  ]
+}
