@@ -26,7 +26,7 @@
   {
     "query": "Wie formatiert man ein USB-Laufwerk manuell und welche Dateisysteme werden unterstützt/nicht unterstützt? Welche Ordner sind nötig?",
     "expected": "Am Computer als exFAT, MS-DOS FAT (Mac), ext3 oder ext4 formatieren; NTFS wird nicht unterstützt; Ordner „TeslaCam“ und ggf. „TeslaTrackMode“ im Root anlegen.",
-    "response": "Manuell wird das USB-Laufwerk auf einem PC als exFAT, MS-DOS FAT, ext3 oder ext4 formatiert - NTFS ist nicht unterstützt (Seite 170). In den Stammordner müssen die Ordner TeslaCam und (falls Track-Modus verwendet werden soll) TeslaTrackMode angelegt werden (Seite 170).",
+    "response": "Manuell wird das USB-Laufwerk auf einem PC als exFAT, MS-DOS FAT, ext3 oder ext4 formatiert - NTFS ist nicht unterstützt (Seite 170). In den Stammordner müssen die Ordner TeslaCam und (falls Track-Modus verwendet werden soll) TeslaTrackMode angelegt werden (Seite 170).",
     "similarity": 0.9654290999534111
   },
   {
