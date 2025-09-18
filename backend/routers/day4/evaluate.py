@@ -413,8 +413,8 @@ def save_results(results: EvaluationResult, output_path: str):
 def main():
     """Main evaluation function"""
     # Default paths
-    default_data_path = "evaluation_data.json"
-    default_output_path = "evaluation_results.json"
+    default_data_path = "evaluation_data_day_4.json"
+    default_output_path = "evaluation_results_day_4.json"
 
     # Check for command line arguments
     data_path = sys.argv[1] if len(sys.argv) > 1 else default_data_path

@@ -283,8 +283,8 @@ def ask_llm(
 
 def get_response(
     session,
-    max_top_k: int = 5,
-    similarity_threshold: float = 0.8,
+    max_top_k: int = 3,
+    similarity_threshold: float = 0.0,
     USE_HYDE: bool = False,
     VERBOSE: bool = False,
 ) -> str:
@@ -333,7 +333,7 @@ if __name__ == "__main__":
     # python -m backend.routers.day3.tools
     import numpy as np
 
-    VERBOSE = False
+    VERBOSE = True
 
     def cosine_similarity(a: list[float], b: list[float]) -> float:
         a_array = np.array(a)
@@ -370,9 +370,9 @@ if __name__ == "__main__":
         responses.append(
             {
                 "query": data["query"],
-                "expected": data["answer"],
+                "answer": data["answer"],
                 "page": data["page"],
-                "response": response,
+                "result": response,
             }
         )
         scores.append(similarity)
