@@ -334,6 +334,8 @@ if __name__ == "__main__":
     import numpy as np
 
     VERBOSE = True
+    USE_HYDE = True
+
 
     def cosine_similarity(a: list[float], b: list[float]) -> float:
         a_array = np.array(a)
@@ -359,6 +361,7 @@ if __name__ == "__main__":
 
         response = get_response(
             ChatSession(messages=[ChatMessage(role="user", content=data["query"])]),
+            USE_HYDE=USE_HYDE,
             VERBOSE=VERBOSE,
         )
 
@@ -382,5 +385,5 @@ if __name__ == "__main__":
         f"Finished {counter} queries. Average similarity score is {np.mean(scores):.3f}"
     )
 
-    with open("backend/routers/day4/evaluation_data_day_4.json", "w") as f:
+    with open("backend/routers/day4/evaluation_data_day_4_hyde.json", "w") as f:
         json.dump(responses, f, indent=2, ensure_ascii=False)
